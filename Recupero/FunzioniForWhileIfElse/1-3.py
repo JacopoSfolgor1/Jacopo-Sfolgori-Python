@@ -12,29 +12,45 @@ c) 30, 25, 20, 15, 10, 5, 0
 d) 5, 15, 25, 35, 45'''
 
 def comb(x, y, z):
-    if x is True:
-        if y | z is True:
-            return "Azione permessa"
+    if x and (y or z):
+        return "Azione permessa"
     else:
         return "Azione negata"
     
-def multiply(lst: list, threshold: int): 
-    newlst: list = []
-    for l in range(len(lst)):
-        if lst[l] < threshold & type(lst[l]) == int:
-            newlst.append(lst[l])
-    return newlst
+def multiply(lst: list, threshold: int):
+    result = 1
+    found = False
+    for num in lst:
+        if num < threshold:
+            result *= num
+            found = True
+    return result if found else 0
     
+def multiply_recur(lst: list, threshold: int):
+    if not lst:
+        return None
 
+    x = lst[0]
+    y = lst[1:]
 
+    result = multiply_recur(y, threshold)
+
+    if x < threshold:
+        if result is None:
+            return x
+        return x * result
+    else:
+        return result
+    
+    
 for n in range(2,15,2):
     print(n)
 
 for n in range(1,14,3):
     print(n)
 
-for n in range(0,31,5):
-    print(reversed(n))
+for n in range(30, -1, -5):
+    print(n)
 
 for n in range(5,46,10):
     print(n)

@@ -42,52 +42,51 @@ specificato tra i valori oppure il messaggio di errore "Nessun contatto trovato 
 questo numero di telefono." se nessun contatto contiene il numero di telefono.'''
 
 
-class ContactMananger:
-    def __init__(self, contacts: dict[str, list[str]]):
-        self.contacts = contacts
+class ContactManager:
+    def __init__(self, contacts: dict[str, list[str]] = None):
+        self.contacts = contacts if contacts is not None else {}
 
-    def create_contact(self, name: str, phone_num: list[str]):
-        if name in self.contacts: 
+    def create_contact(self, name: str, phone_numbers: list[str]):
+        if name in self.contacts:
             return "Errore: il contatto esiste già."
-        else:
-            return self.contacts.upgrade(key = name, value = phone_num)       
+        self.contacts[name] = phone_numbers
+        return {name: self.contacts[name]}
 
     def add_phone_number(self, contact_name: str, phone_number: str):
-        if contact_name in self.contacts:
-            if phone_number in self.contacts[contact_name]:
-                return "Errore: il numero di telefono esiste già."
-            else:
-                return self.contacts[contact_name].append(phone_number)
-        else:
+        if contact_name not in self.contacts:
             return "Errore: il contatto non esiste."
-    
+        if phone_number in self.contacts[contact_name]:
+            return "Errore: il numero di telefono esiste già."
+        self.contacts[contact_name].append(phone_number)
+        return {contact_name: self.contacts[contact_name]}
+
     def remove_phone_number(self, contact_name: str, phone_number: str):
-        if contact_name in self.contacts:
-            if phone_number in self.contacts[contact_name]:
-                return self.contacts[contact_name].remove(phone_number)
-            else:
-                return "Errore: il numero di telefono non è presente."
-        else:
-            return "Errore: il contatto non esiste"
+        if contact_name not in self.contacts:
+            return "Errore: il contatto non esiste."
+        if phone_number not in self.contacts[contact_name]:
+            return "Errore: il numero di telefono non è presente."
+        self.contacts[contact_name].remove(phone_number)
+        return {contact_name: self.contacts[contact_name]}
 
     def update_phone_number(self, contact_name: str, old_phone_number: str, new_phone_number: str):
-        if self.remove_phone_number(contact_name, old_phone_number):
-            return self.contacts[contact_name].append(new_phone_number)    
-        return "Errore: il contatto non esiste"
-    
+        if contact_name not in self.contacts:
+            return "Errore: il contatto non esiste."
+        if old_phone_number not in self.contacts[contact_name]:
+            return "Errore: il numero di telefono non è presente."
+        index = self.contacts[contact_name].index(old_phone_number)
+        self.contacts[contact_name][index] = new_phone_number
+        return {contact_name: self.contacts[contact_name]}
+
     def list_contacts(self):
-        return self.contacts
+        return list(self.contacts.keys())
 
     def list_phone_numbers(self, contact_name: str):
-        if contact_name in self.contacts:
-            return self.contacts[contact_name]
-        else:
-            return "il contatto non esiste."
+        if contact_name not in self.contacts:
+            return "Errore: il contatto non esiste."
+        return self.contacts[contact_name]
 
     def search_contact_by_phone_number(self, phone_number: str):
-        for key, value in self.contacts.items():
-            if phone_number == value:
-                return self.contacts[key] 
-            else:
-                return "Nessun contatto trovato con questo numero di telefono"
+        matches = [name for name, numbers in self.contacts.items() if phone_number in numbers]
+        return matches if matches else "Nessun contatto trovato con questo numero di telefono."
+
                 

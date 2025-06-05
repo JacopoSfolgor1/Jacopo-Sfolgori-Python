@@ -8,32 +8,31 @@ restituisca un nuovo dizionario con solo i prodotti che hanno un prezzo inferior
 con i prezzi aumentati del 10% e arrotondati a due cifre decimali.'''
 
 
-def convert(ky, val):
-    check: dict = {}
-    if ky in check:
-        check[ky] += check[val]
-    else:
-        check.append(ky,val)
+def convert(lst: list[tuple]):
+    check = {}
+    for key, val in lst:
+        if key in check:
+            check[key] += val
+        else:
+            check[key] = val
+    return check
+
         
 
 def separate(lnum: list):
-    pos: list = []
-    neg: list = []
-    dizio: dict = {pos, neg}
-    
-    for n in range(len(lnum)):
-        if n % 2 == 0:
+    pos = []
+    neg = []
+    for n in lnum:
+        if n >= 0:
             pos.append(n)
         else:
             neg.append(n)
-
-    return dizio    
+    return {"positivi": pos, "negativi": neg}
 
 def prezzi(dicpro: dict):
-    new: dict = {}
-    for key,value in dicpro.items():
+    new = {}
+    for key, value in dicpro.items():
         if value < 50:
-            newval = round((value * 10 ) / 100, 2)
-            new.append(key,newval)
-
+            newval = round(value * 1.10, 2)
+            new[key] = newval
     return new
