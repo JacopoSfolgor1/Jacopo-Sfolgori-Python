@@ -19,18 +19,18 @@ output = count_unique_words(text)
 ● # output == {'hello': 2, 'world': 2, 'python': 1}'''
 
 
-
-def count_unique_words(text: str) -> dict[str, int]:
-    check: str = ".,!?;:-_()[]{}'\"…/\\<>@#&*+=|^`~" 
-    freq: dict[str, int] = {}
+def count_unique_words(text: str) -> dict[str: int]:
+    check: str = ".,!?;:-_()[]{}'\"…/\\<>@#&*+=|^"
+    freq: dict[str: int] = {}
 
     for token in text.split():
-        word = token.lower().strip(check)
+        word: str = token.lower().strip(check)
         if word:
-            freq[word] = freq.get(word, 0) + 1
-
+            if word in freq:
+                freq[word] += 1
+            else:
+                freq[word] = 1
     return freq
-
 
 text = "Hello, world! Hello... PYTHON? world."
 print(count_unique_words(text))
