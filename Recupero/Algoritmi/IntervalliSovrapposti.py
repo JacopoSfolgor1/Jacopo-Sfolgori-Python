@@ -20,11 +20,11 @@ intervals = [[1, 4], [4, 5]]
 merge_intervals(intervals) # restituisce [[1, 5]]'''
 
 
-def merge_intervals(intervals):
+def merge_intervals(intervals: list[int]):
     if not intervals:
         return []
     intervals.sort()
-    merged = [intervals[0]]
+    merged: list[int] = [intervals[0]]
     for start, end in intervals[1:]:
         last_end = merged[-1][1]
         if start <= last_end:
@@ -36,7 +36,7 @@ def merge_intervals(intervals):
 
 
 intervals = [[1, 3], [2, 6], [8, 10], [15, 18]]
-merge_intervals(intervals) # restituisce [[1, 6], [8, 10], [15,18]]
+print(merge_intervals(intervals)) # restituisce [[1, 6], [8, 10], [15,18]]
 intervals = [[1, 4], [4, 5]]
-merge_intervals(intervals) # restituisce [[1, 5]]
+print(merge_intervals(intervals)) # restituisce [[1, 5]]
 
